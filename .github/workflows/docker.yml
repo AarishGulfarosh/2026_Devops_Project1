@@ -26,3 +26,15 @@ jobs:
           push: true
           tags: aarishgulfarosh/devops-project1:latest
 
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker pull aarishgulfarosh/devops-project1:latest
+            docker stop devops-container || true
+            docker rm devops-container || true
+            docker run -d -p 3000:3000 --name devops-container --restart unless-stopped aarishgulfarosh/devops-project1:latest
+
