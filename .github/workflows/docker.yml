@@ -38,4 +38,8 @@ jobs:
             docker pull aarishgulfarosh/devops-project1:${{ github.sha }}
             docker stop devops-container || true
             docker rm devops-container || true
-            docker run -d -p 3000:3000 --name devops-container --restart unless-stopped aarishgulfarosh/devops-project1:${{ github.sha }}
+            docker run -d -p 3000:3000 \
+            --name devops-container \
+            --restart unless-stopped \
+            -e APP_VERSION=${{ github.sha }} \
+            aarishgulfarosh/devops-project1:${{ github.sha }}
